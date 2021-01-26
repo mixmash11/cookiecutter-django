@@ -10,7 +10,7 @@ services:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
     image: {{ cookiecutter.project_slug }}_local_django
-    container_name: django
+    container_name: django_{{cookiecutter.project_slug}}
     depends_on:
       - postgres
       {%- if cookiecutter.use_mailhog == 'y' %}
@@ -51,7 +51,7 @@ services:
       - ./{{ cookiecutter.project_slug }}:/app/{{ cookiecutter.project_slug }}:z
     ports:
       - "7000:7000"
-    
+
   {%- if cookiecutter.use_mailhog == 'y' %}
 
   mailhog:
