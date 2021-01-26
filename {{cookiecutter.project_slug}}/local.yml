@@ -10,7 +10,7 @@ services:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
     image: {{ cookiecutter.project_slug }}_local_django
-    container_name: django_{{cookiecutter.project_slug}}
+    container_name: {{ cookiecutter.project_slug }}_local_django
     depends_on:
       - postgres
       {%- if cookiecutter.use_mailhog == 'y' %}
@@ -29,8 +29,8 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
-    image: {{ cookiecutter.project_slug }}_production_postgres
-    container_name: postgres
+    image: {{ cookiecutter.project_slug }}_local_postgres
+    container_name: {{ cookiecutter.project_slug }}_local_postgres
     volumes:
       - local_postgres_data:/var/lib/postgresql/data:Z
       - local_postgres_data_backups:/backups:z
@@ -39,7 +39,7 @@ services:
 
   docs:
     image: {{ cookiecutter.project_slug }}_local_docs
-    container_name: docs
+    container_name: {{ cookiecutter.project_slug }}_local_docs
     build:
       context: .
       dockerfile: ./compose/local/docs/Dockerfile
@@ -56,7 +56,7 @@ services:
 
   mailhog:
     image: mailhog/mailhog:v1.0.0
-    container_name: mailhog
+    container_name: {{ cookiecutter.project_slug }}_local_mailhog
     ports:
       - "8025:8025"
 
@@ -70,7 +70,7 @@ services:
   celeryworker:
     <<: *django
     image: {{ cookiecutter.project_slug }}_local_celeryworker
-    container_name: celeryworker
+    container_name: {{ cookiecutter.project_slug }}_local_celeryworker
     depends_on:
       - redis
       - postgres
@@ -109,7 +109,7 @@ services:
       context: .
       dockerfile: ./compose/local/node/Dockerfile
     image: {{ cookiecutter.project_slug }}_local_node
-    container_name: node
+    container_name: {{ cookiecutter.project_slug }}_local_node
     depends_on:
       - django
     volumes:
